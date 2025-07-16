@@ -33,7 +33,7 @@
     <name>Flink : Table : SQL Gateway</name>
 
     <packaging>jar</packaging>
-	<version>${parent.parent.version}</version>
+	<version>1.20-SNAPSHOT</version>
 
 	<properties>
 		<surefire.module.config><!--
