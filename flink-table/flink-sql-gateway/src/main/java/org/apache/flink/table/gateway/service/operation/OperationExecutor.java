@@ -79,6 +79,8 @@ import org.apache.flink.table.operations.LoadModuleOperation;
 import org.apache.flink.table.operations.ModifyOperation;
 import org.apache.flink.table.operations.Operation;
 import org.apache.flink.table.operations.QueryOperation;
+import org.apache.flink.table.operations.ShowCreateCatalogOperation;
+import org.apache.flink.table.operations.ShowCreateTableOperation;
 import org.apache.flink.table.operations.ShowFunctionsOperation;
 import org.apache.flink.table.operations.StatementSetOperation;
 import org.apache.flink.table.operations.UnloadModuleOperation;
@@ -557,6 +559,9 @@ public class OperationExecutor {
                     .getSessionState()
                     .materializedTableManager
                     .callMaterializedTableOperation(this, handle, (MaterializedTableOperation) op);
+        } else if (op instanceof ShowCreateTableOperation
+                || op instanceof ShowCreateCatalogOperation) {
+            return callShowCreateOperation(tableEnv, handle, op);
         } else {
             return callOperation(tableEnv, handle, op);
         }
@@ -719,6 +724,12 @@ public class OperationExecutor {
     protected ResultFetcher callRemoveJar(OperationHandle operationHandle, String jarPath) {
         throw new UnsupportedOperationException(
                 "SQL Gateway doesn't support REMOVE JAR syntax now.");
+    }
+
+    private ResultFetcher callShowCreateOperation(
+            TableEnvironmentInternal tableEnv, OperationHandle handle, Operation op) {
+        TableResultInternal result = tableEnv.executeInternal(op);
+        return ResultFetcher.showCreateFromTableResult(handle, result);
     }
 
     private ResultFetcher callOperation(
