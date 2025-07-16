@@ -29,6 +29,7 @@ import org.apache.flink.table.gateway.api.operation.OperationHandle;
 import org.apache.flink.table.gateway.api.results.FetchOrientation;
 import org.apache.flink.table.gateway.api.results.ResultSet;
 import org.apache.flink.table.gateway.api.results.ResultSetImpl;
+import org.apache.flink.table.gateway.service.utils.SensitivePropertiesProtector;
 import org.apache.flink.table.gateway.service.utils.SqlExecutionException;
 import org.apache.flink.table.resource.ResourceManager;
 import org.apache.flink.table.utils.print.RowDataToStringConverter;
@@ -167,6 +168,16 @@ public class ResultFetcher {
                     tableResult.getJobClient().map(JobClient::getJobID).orElse(null),
                     tableResult.getResultKind());
         }
+    }
+
+    public static ResultFetcher showCreateFromTableResult(
+            OperationHandle operationHandle, TableResultInternal tableResult) {
+        return new ResultFetcher(
+                operationHandle,
+                tableResult.getResolvedSchema(),
+                SensitivePropertiesProtector.collectAndProtect(tableResult),
+                tableResult.getJobClient().map(JobClient::getJobID).orElse(null),
+                tableResult.getResultKind());
     }
 
     public static ResultFetcher fromResults(
