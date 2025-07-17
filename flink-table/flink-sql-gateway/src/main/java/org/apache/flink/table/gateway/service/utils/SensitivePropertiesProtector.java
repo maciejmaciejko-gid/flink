@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-
 package org.apache.flink.table.gateway.service.utils;
 
 import org.apache.flink.table.api.internal.TableResultInternal;
