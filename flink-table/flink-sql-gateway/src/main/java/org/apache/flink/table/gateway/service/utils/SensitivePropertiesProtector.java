@@ -37,7 +37,9 @@ import static java.util.regex.Pattern.quote;
 public class SensitivePropertiesProtector {
 
     private static final String SENSITIVE_OPTIONS =
-            "[^']*" + String.join("[^']*|[^']*", "user", "pass", quote("sasl.jaas.config")) + "[^']*";
+            "[^']*"
+                    + String.join("[^']*|[^']*", "user", "pass", quote("sasl.jaas.config"))
+                    + "[^']*";
 
     private static final Pattern CREDENTIALS_PATTERN =
             Pattern.compile(
