@@ -38,7 +38,12 @@ public class SensitivePropertiesProtector {
 
     private static final String SENSITIVE_OPTIONS =
             "[^']*"
-                    + String.join("[^']*|[^']*", "user", "pass", quote("sasl.jaas.config"), "authorization")
+                    + String.join(
+                            "[^']*|[^']*",
+                            "user",
+                            "pass",
+                            quote("sasl.jaas.config"),
+                            "authorization")
                     + "[^']*";
 
     private static final Pattern CREDENTIALS_PATTERN =
